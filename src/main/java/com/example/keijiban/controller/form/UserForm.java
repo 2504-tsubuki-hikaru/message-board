@@ -8,12 +8,14 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class UsersForm implements Serializable {
+public class UserForm implements Serializable {
 
     @NotBlank(message="アカウントを入力してください")
     private String account;
 
     @NotBlank(message="パスワードを入力してください")
     private String password;
+
+    private int isStopped;
 
 }

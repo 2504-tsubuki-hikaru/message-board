@@ -8,6 +8,7 @@
 <body>
     <form th:action="@{/loginProcess}" th:method="post">
         <div th:object="${formModel}" >
+            <div th:if="${errorMessages}" class="loginFailure" th:text="${errorMessages}"></div>
             <div class="errorMessage" th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></div>
             <div class="label">アカウント名</div>
             <textarea class="tweet-box" name="account" rows="2" cols="20"></textarea><br/>
@@ -17,22 +18,6 @@
             <input class="loginButton" type="submit" value="ログイン"/>
         </div>
     </form>
-  <!--<form th:action="@{/loginProcess}" th:method="post">
-      <div th:object="${usersForm}" ></div>
-      <div class="errorMessage" th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></div>
-      <div class="label">アカウント名</div>
-      <textarea class="tweet-box" name="account" rows="2" cols="20"></textarea><br/>
-      <div class="label">パスワード</div>
-      <textarea class="tweet-box" name="password" rows="2" cols="20"></textarea><br/>
-      <input class="loginButton" type="submit" value="ログイン"/>
-  </form>-->
 </body>
 </html>
 
-<!--
-form th:action="@{/loginProcess}" method="post" th:object="${formModel}">
-<label for="account">アカウント：</label>
-<input type="text" id="account" th:field="*{account}" />
-<div class="errorMessage"
-     th:if="${#fields.hasErrors('account')}"
-     th:errors="*{account}"></div>-->

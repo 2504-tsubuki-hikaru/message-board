@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 @Getter
 @Setter
-public class Users {
+public class User {
 
     @Id
     @Column

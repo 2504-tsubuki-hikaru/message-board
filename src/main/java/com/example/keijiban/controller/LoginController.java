@@ -1,8 +1,8 @@
 package com.example.keijiban.controller;
 
 import com.example.keijiban.cipher.CipherUtil;
-import com.example.keijiban.controller.form.UsersForm;
-import com.example.keijiban.repository.entity.Users;
+import com.example.keijiban.controller.form.UserForm;
+import com.example.keijiban.repository.entity.User;
 import com.example.keijiban.service.UsersService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class LoginController {
@@ -29,12 +26,12 @@ public class LoginController {
    @GetMapping("/login")
    public ModelAndView login() {
        ModelAndView mav = new ModelAndView("login");
-       mav.addObject("formModel", new UsersForm());
+       mav.addObject("formModel", new UserForm());
        return mav;
    }
 
    @PostMapping("/loginProcess")
-    public ModelAndView loginProcess (@ModelAttribute("formModel") @Validated UsersForm usersForm, BindingResult result) {
+    public ModelAndView loginProcess (@ModelAttribute("formModel") @Validated UserForm usersForm, BindingResult result) {
         ModelAndView mav = new ModelAndView();
         if (result.hasErrors()) {
             //エラーの時はログイン画面でエラーを出したいから遷移先を指定
@@ -45,27 +42,20 @@ public class LoginController {
         }
        String account = usersForm.getAccount();
        String password = usersForm.getPassword();
-
+       //パスワードを暗号化
        String encPassword = CipherUtil.encrypt(password);
+       //ユーザー情報を取得
+       User users = usersService.findByAccountAndPassword(account, encPassword);
 
-        Users users = usersService.findByAccountAndPassword(account, encPassword);
-
-       if (users == null) {
-           List<String> errorMessages = new ArrayList<>();
-           errorMessages.add("ログインに失敗しました");
-           session.setAttribute("errorMessages", errorMessages);
-           mav.setViewName("forward:/login");
+       //ユーザー情報が取得できなかった時、もしくは活動停止アカウントの時はエラーを表示
+       if (users == null || usersForm.getIsStopped() !=0) {
+           mav.addObject("formModel", usersForm);
+           mav.addObject("errorMessages", "ログインに失敗しました");
+           mav.setViewName("/login");
+           return mav;
        }
-        //Usersの中にあるisStoppedの値の中身を確かめたいのでgetする。
-       Integer isStopped = users.getIsStopped();
-
-       if (isStopped != 0) {
-           List<String> errorMessages = new ArrayList<>();
-           errorMessages.add("ログインに失敗しました");
-           session.setAttribute("errorMessages", errorMessages);
-           mav.setViewName("forward:/login");
-        }
-
+       //ログイン情報をセッションに入れて、ホーム画面にリダイレクト
+       session.setAttribute("loginUser", usersForm);
        return new ModelAndView("redirect:/home");
     }
 }
