@@ -27,6 +27,7 @@ public class LoginController {
    public ModelAndView login() {
        ModelAndView mav = new ModelAndView("login");
        mav.addObject("formModel", new UserForm());
+       session.invalidate();
        return mav;
    }
 

@@ -1,13 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>ホーム画面</title>
     ホーム画面
-
-
 </head>
 <body>
-
+<!--ログアウト処理-->
+    <a href="./"></a>
+    <a href="setting"></a>
+    <a href="/login">ログアウト</a>
+<!--新規投稿ボタン表示-->
+    <div class="newPost">
+        <a href="/new">
+            <input type="button" value="新規投稿" class="button">
+        </a>
+<!--絞込機能-->
+    <div class="calendar">
+        <form th:action="@{/home}" th:method="get">
+            日付 :
+            <input type="date" name="start" th:value="${start}">
+            <input type="date" name="end" th:value="${end}">
+            カテゴリー :
+            <textarea name="category" class="category" rows="1" cols="10" th:text="${category}"></textarea>
+            <input type="submit" value="絞込">
+        </form>
+    </div>
+<!--投稿表示処理 -->
+    <div th:each="userMessageDate : ${userMessageDate}" >
+        <div>
+            <div> 件名　: <span th:text="${userMessageDate.title}"/></div>
+            <div> 本文　: <span th:text="${userMessageDate.text}"/></div>
+            <div> カテゴリー　: <span th:text="${userMessageDate.category}"/></div>
+            <div> 投稿日時　: <span th:text="${userMessageDate.createdDate}"/></div>
+            <div> アカウント : <span th:text="${userMessageDate.account}"/></div>
+            <div> 名前 : <span th:text="${userMessageDate.name}"/></div>
+        </div>
+<!--コメント表示処理-->
+        <div th:each="userCommentDate : ${userCommentDate}"
+            th:if="${userCommentDate.messageId} == ${userMessageDate.messageId}">
+            <div>   コメント　: <span th:text="${userCommentDate.text}"/></div>
+        </div>
+    </div>
 </body>
 </html>
