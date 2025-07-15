@@ -13,6 +13,8 @@ import java.util.Date;
 public class Message {
 
     @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column
@@ -31,4 +33,7 @@ public class Message {
 
     @Column
     private Date createdDate;
+
+    @Column
+    private Date updatedDate;
 }

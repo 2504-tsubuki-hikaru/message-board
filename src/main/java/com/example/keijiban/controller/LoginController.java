@@ -55,6 +55,8 @@ public class LoginController {
            mav.setViewName("/login");
            return mav;
        }
+       usersForm.setUserId(users.getId());
+       usersForm.setIsStopped(users.getIsStopped());
        //ログイン情報をセッションに入れて、ホーム画面にリダイレクト
        session.setAttribute("loginUser", usersForm);
        return new ModelAndView("redirect:/home");

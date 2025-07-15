@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:c="http://www.w3.org/1999/XSL/Transform">
 <head>
     <meta charset="UTF-8">
     <title>ホーム画面</title>
@@ -15,6 +15,7 @@
         <a href="/new">
             <input type="button" value="新規投稿" class="button">
         </a>
+    </div>
 <!--絞込機能-->
     <div class="calendar">
         <form th:action="@{/home}" th:method="get">
@@ -36,11 +37,36 @@
             <div> アカウント : <span th:text="${userMessageDate.account}"/></div>
             <div> 名前 : <span th:text="${userMessageDate.name}"/></div>
         </div>
+        <div class="delete-button" >
+            <div th:if ="${ loginUser.userId == userMessageDate.userId }">
+                <form th:action="@{/delete/{id}(id=${userMessageDate.messageId})}" th:method="delete">
+                    <input type="submit" onclick="return confirm('本当に削除しますか？');" value="削除">
+                </form>
+            </div>
+        </div>
 <!--コメント表示処理-->
         <div th:each="userCommentDate : ${userCommentDate}"
             th:if="${userCommentDate.messageId} == ${userMessageDate.messageId}">
             <div>   コメント　: <span th:text="${userCommentDate.text}"/></div>
         </div>
-    </div>
+<!--コメント追加フォーム-->
+        <form method="post" action="/commentAdd">
+            <div class="form-area">
+                <div th:if="${!#lists.isEmpty(errorMessages)}">
+                   <div th:if ="${ userMessageDate.messageId == messageId }">
+                        <div class="errorMessages" th:each="messages : ${errorMessages}">
+                            <span th:text="${messages}" style="color:red;" />
+                        </div>
+                    </div>
+                </div>
+                <div><label>コメント入力欄</label></div>
+                <textarea class="tweet-box" name="text" size="20" maxlength="550" ></textarea><br/>
+                <input type="submit" value="コメント"/>
+                <!--th:value～にしないとControllerに値を渡せない。（valueで渡そうとしていた為コメントを残す）-->
+                <input type="hidden" name="messageId" th:value="${userMessageDate.messageId}"/>
+                <input type="hidden" name="userId" th:value="${userMessageDate.userId}"/>
+            </div>
+        </form>
+        </div>
 </body>
 </html>

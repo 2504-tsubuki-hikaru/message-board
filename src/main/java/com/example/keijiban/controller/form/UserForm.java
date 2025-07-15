@@ -18,4 +18,6 @@ public class UserForm implements Serializable {
 
     private int isStopped;
 
+    private Integer userId;
+
 }

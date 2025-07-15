@@ -1,18 +1,24 @@
 package com.example.keijiban.controller;
 
+import com.example.keijiban.controller.form.CommentForm;
 import com.example.keijiban.controller.form.UserForm;
 import com.example.keijiban.dto.UserCommentDto;
 import com.example.keijiban.dto.UserMessageDto;
+import com.example.keijiban.service.CommentService;
+import com.example.keijiban.service.MessageService;
 import com.example.keijiban.service.UserCommentService;
 import com.example.keijiban.service.UserMessageService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -25,6 +31,12 @@ public class HomeController {
 
     @Autowired
     UserCommentService userCommentService;
+
+    @Autowired
+    MessageService messageService;
+
+    @Autowired
+    CommentService commentService;
 
     @GetMapping("/")
     public ModelAndView top() {
@@ -48,13 +60,69 @@ public class HomeController {
         List<UserMessageDto> userMessageData = userMessageService.findByUserMessages(start, end, category);
         //コメント取得
         List<UserCommentDto> userCommentData = userCommentService.getAllUserComments();
+
         //ログインユーザー情報
         UserForm loginUser = (UserForm)session.getAttribute("loginUser");
+        //バリデーションのエラーメッセージをsessionから取得(コメント投稿)
+        List<String> errorMessages = (List<String>)session.getAttribute("errorMessages");
+        //int型にすると!=nullが使えないのでIntegerを使う（ラッパークラス）
+        Integer messageId = (Integer) session.getAttribute("messageId");
+        //初期表示のエラー回避
+        if (messageId != null) {
+            mav.addObject("messageId",messageId);
+        }
 
         //取得したデータをmavにセットしhtmlで使えるように
         mav.addObject("userMessageDate", userMessageData);
         mav.addObject("userCommentDate", userCommentData);
+        mav.addObject("errorMessages", errorMessages);
+        mav.addObject("loginUser", loginUser);
         mav.setViewName("home");
+
+        //セッションの破棄(エラーメッセージが残ってしまうため)
+        session.removeAttribute("errorMessages");
+        session.removeAttribute("userId");
+
         return mav;
     }
+
+    /*
+     * 投稿削除処理
+     */
+    @DeleteMapping("/delete/{id}")
+    //@PathVariable = /delete/{id}の{id}をdeleteContentメソッドの引数として渡す役割。
+    public ModelAndView deletePost(@PathVariable Integer id) {
+        //投稿を削除
+        messageService.deletePost(id);
+        //削除後、新規投稿全件取得をしたい
+        return new ModelAndView("redirect:/home");
+    }
+
+    /*
+     * コメント投稿処理
+     */
+    @PostMapping("/commentAdd")
+    public ModelAndView addComment(@Validated @ModelAttribute("formModel") CommentForm commentForm, BindingResult result) {
+        if (result.hasErrors()) {
+            List<String> errorMessages = new ArrayList<>();
+            //resultからgetFieldErrors()でエラーメッセージをとってこれる。
+            for(FieldError error : result.getFieldErrors()) {
+                errorMessages.add(error.getDefaultMessage());
+            }
+
+            session.setAttribute("errorMessages",errorMessages );
+            session.setAttribute("messageId",commentForm.getMessageId());
+
+            ModelAndView mav = new ModelAndView();
+            //エラーの時は新規投稿画面でエラーを出したいから遷移先を指定
+            mav.setViewName("redirect:/home");
+            //引数をそのまま返す。
+            mav.addObject("formModel", commentForm);
+            return mav;
+        }
+        //コメント内容をDBへ登録
+        commentService.commentAdd(commentForm);
+        return new ModelAndView("redirect:/home");
+    }
+
 }

@@ -1,12 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
   新規投稿画面
 </head>
 <body>
+<form method="post" th:action="@{/add}" th:object="${formModel}" >
+    <!-- 件名 -->
+    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color:red;"></div>
+    <div class="label">件名</div>
+    <textarea class="tweet-box" th:field="*{title}" rows="2" cols="20"></textarea><br/>
 
-<textarea class="tweet-box" name="password" rows="2" cols="20"></textarea><br/>
+    <!-- 本文 -->
+    <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}" style="color:red;"></div>
+    <div class="label">本文</div>
+    <textarea class="tweet-box" th:field="*{text}" rows="10" cols="30"></textarea><br/>
+
+    <!-- カテゴリ -->
+    <div th:if="${#fields.hasErrors('category')}" th:errors="*{category}" style="color:red;"></div>
+    <div class="label">カテゴリ―</div>
+    <textarea class="tweet-box" th:field="*{category}" rows="2" cols="20"></textarea><br/>
+    <div>
+        <input class="addButton" type="submit" value="追加"/>
+    </div>
+</form>
 </body>
 </html>

@@ -8,11 +8,11 @@
 <body>
     <form th:action="@{/loginProcess}" th:method="post">
         <div th:object="${formModel}" >
-            <div th:if="${errorMessages}" class="loginFailure" th:text="${errorMessages}"></div>
-            <div class="errorMessage" th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></div>
+            <div th:if="${errorMessages}" class="loginFailure" th:text="${errorMessages}" style="color:red;" ></div>
+            <div class="errorMessage" th:if="${#fields.hasErrors('account')}" th:errors="*{account}" style="color:red;"></div>
             <div class="label">アカウント名</div>
             <textarea class="tweet-box" name="account" rows="2" cols="20"></textarea><br/>
-            <div class="errorMessage" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+            <div class="errorMessage" th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:red;"></div>
             <div class="label">パスワード</div>
             <textarea class="tweet-box" name="password" rows="2" cols="20"></textarea><br/>
             <input class="loginButton" type="submit" value="ログイン"/>

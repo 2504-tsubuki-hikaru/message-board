@@ -13,6 +13,8 @@ import java.util.Date;
 public class Comment {
 
     @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column
@@ -31,5 +33,8 @@ public class Comment {
 
     @Column
     private Date createdDate;
+
+    @Column
+    private Date updatedDate;
 
 }
