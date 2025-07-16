@@ -42,4 +42,9 @@ public class CommentService {
         comments.setUpdatedDate(new Date());
         return comments;
     }
+
+    //コメント削除
+    public void commentDeleteById(Integer id) {
+        commentRepository.deleteById(id);
+    }
 }

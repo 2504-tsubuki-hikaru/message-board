@@ -14,4 +14,8 @@ public class UsersService {
     public User findByAccountAndPassword(String account, String password) {
         return usersRepository.findByAccountAndPassword(account, password);
     }
+
+    public void updateIsStopped(Integer id, Integer isStopped) {
+        usersRepository.updateIsStopped(id,isStopped);
+    }
 }

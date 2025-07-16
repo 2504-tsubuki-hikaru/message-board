@@ -26,11 +26,15 @@ public class User {
     @Column
     private String name;
 
-    @Column
-    private Integer branchId;
+    //usersテーブルにはbranch_id(外部キー)があるのでuserEntityに
+    // @ManyToOne @JoinColumnをつけて紐づける必要がある。
+    @ManyToOne
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
 
-    @Column
-    private Integer departmentId;
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
 
     @Column
     private Integer isStopped;
@@ -42,3 +46,4 @@ public class User {
     private LocalDateTime updatedDate;
 
 }
+

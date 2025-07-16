@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>ユーザー管理画面</title>
+    <div>ユーザー管理画面</div>
+</head>
+<body>
+<!--ユーザー情報の表示-->
+<div th:each="usd : ${udbData}" >
+    <div> アカウント　: <span th:text="${usd.account}"/></div>
+    <div> 名前　: <span th:text="${usd.name}"/></div>
+    <div> 支店名　: <span th:text="${usd.branchName}"/></div>
+    <div> 支店ID　: <span th:text="${usd.branchId}"/></div>
+    <div> 部署名　: <span th:text="${usd.departmentName}"/></div>
+    <div> 部署名ID　: <span th:text="${usd.departmentId}"/></div>
+    <div> 停止中　: <span th:text="${usd.isStopped}"/></div>
+
+    <form th:action="@{/update/{id}(id=${usd.id})}" th:method="put">
+        <select name="isStopped">
+            <option value="0" th:selected="${usd.isStopped == 0}">復活</option>
+            <option value="1" th:selected="${usd.isStopped == 1}">停止</option>
+        </select>
+        <input type="submit" onclick="return confirm('本当に変更しますか？');" value="変更">
+        <input type="hidden" name="id" th:value="${usd.id}"/>
+    </form>
+</div>
+
+</body>
+</html>

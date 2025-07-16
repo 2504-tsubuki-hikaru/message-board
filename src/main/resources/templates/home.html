@@ -16,6 +16,12 @@
             <input type="button" value="新規投稿" class="button">
         </a>
     </div>
+<!--ユーザー管理画面遷移ボタン表示-->
+    <div class="userManagement">
+        <a href="/management">
+            <input type="button" value="ユーザ―管理画面" class="button">
+        </a>
+    </div>
 <!--絞込機能-->
     <div class="calendar">
         <form th:action="@{/home}" th:method="get">
@@ -38,21 +44,29 @@
             <div> 名前 : <span th:text="${userMessageDate.name}"/></div>
         </div>
         <div class="delete-button" >
+            <!--ログインユーザーが自分で投稿した物だけ削除ボタンを表示-->
             <div th:if ="${ loginUser.userId == userMessageDate.userId }">
                 <form th:action="@{/delete/{id}(id=${userMessageDate.messageId})}" th:method="delete">
                     <input type="submit" onclick="return confirm('本当に削除しますか？');" value="削除">
                 </form>
             </div>
         </div>
-<!--コメント表示処理-->
+<!--コメント表示処理とコメント削除ボタン表示処理-->
         <div th:each="userCommentDate : ${userCommentDate}"
             th:if="${userCommentDate.messageId} == ${userMessageDate.messageId}">
             <div>   コメント　: <span th:text="${userCommentDate.text}"/></div>
+            <!--ログインユーザーが自分でコメントした物だけ削除ボタンを表示-->
+            <div th:if ="${ loginUser.userId == userCommentDate.userId }">
+                <form th:action="@{/commentDelete/{id}(id=${userCommentDate.id})}" th:method="delete">
+                    <input type="submit" onclick="return confirm('本当に削除しますか？');" value="削除">
+                </form>
+            </div>
         </div>
 <!--コメント追加フォーム-->
         <form method="post" action="/commentAdd">
             <div class="form-area">
                 <div th:if="${!#lists.isEmpty(errorMessages)}">
+                    <!--コメントしようとしたコメント入力フォームにエラーメッセージを表示-->
                    <div th:if ="${ userMessageDate.messageId == messageId }">
                         <div class="errorMessages" th:each="messages : ${errorMessages}">
                             <span th:text="${messages}" style="color:red;" />
@@ -67,6 +81,6 @@
                 <input type="hidden" name="userId" th:value="${userMessageDate.userId}"/>
             </div>
         </form>
-        </div>
+    </div>
 </body>
 </html>

@@ -45,6 +45,9 @@ public class HomeController {
         return mav;
     }
 
+    /*
+     * ホーム画面表示処理
+     */
     @GetMapping("/home")
     public ModelAndView home(@RequestParam(name="start",required = false)String start,
                              @RequestParam(name="end",required = false)String end,
@@ -114,15 +117,29 @@ public class HomeController {
             session.setAttribute("messageId",commentForm.getMessageId());
 
             ModelAndView mav = new ModelAndView();
-            //エラーの時は新規投稿画面でエラーを出したいから遷移先を指定
+            //エラーの時はホーム画面でエラーを出したいから遷移先を指定
             mav.setViewName("redirect:/home");
             //引数をそのまま返す。
             mav.addObject("formModel", commentForm);
             return mav;
         }
+        //ここでログインユーザーのIDをとっていないから最初にログインした奴のuserIdでDB登録されていた。
+        UserForm loginUser = (UserForm)session.getAttribute("loginUser");
+        //userIdをmessageFormに格納
+        commentForm.setUserId(loginUser.getUserId());
         //コメント内容をDBへ登録
         commentService.commentAdd(commentForm);
         return new ModelAndView("redirect:/home");
     }
 
+    /*
+     * コメント削除処理
+     */
+    @DeleteMapping("/commentDelete/{id}")
+    public ModelAndView deleteComment(@PathVariable Integer id) {
+        // 投稿をテーブルに格納
+        commentService.commentDeleteById(id);
+        // rootへリダイレクト
+        return new ModelAndView("redirect:/home");
+    }
 }
