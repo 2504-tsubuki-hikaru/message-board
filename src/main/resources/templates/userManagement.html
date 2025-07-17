@@ -6,6 +6,12 @@
     <div>ユーザー管理画面</div>
 </head>
 <body>
+<!--ユーザー登録画面遷移ボタン表示-->
+<div class="userRegistration">
+    <a href="/registration">
+        <input type="button" value="ユーザ―登録画面" class="button">
+    </a>
+</div>
 <!--ユーザー情報の表示-->
 <div th:each="usd : ${udbData}" >
     <div> アカウント　: <span th:text="${usd.account}"/></div>

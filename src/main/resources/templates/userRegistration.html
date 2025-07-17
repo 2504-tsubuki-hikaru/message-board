@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>ユーザ登録画面</title>
+    ユーザ登録画面
+</head>
+<body>
+<form method="post" th:action="@{/newUser}">
+
+    <div class="label">アカウント名</div>
+    <textarea class="tweet-box" name="account" rows="2" cols="20"></textarea><br/>
+    <div class="label">パスワード</div>
+    <textarea class="tweet-box" name="password" rows="2" cols="20"></textarea><br/>
+    <div class="label">確認用パスワード</div>
+    <textarea class="tweet-box" name="confirmPassword" rows="2" cols="20"></textarea><br/>
+    <div class="label">名前</div>
+    <textarea class="tweet-box" name="name" rows="2" cols="20"></textarea><br/>
+
+    支社選択　:
+    <select name="branchId">
+        <option value="" ></option>
+        <option value="1" >A支社</option>
+        <option value="2" >B支社</option>
+        <option value="3" >C支社</option>
+        <option value="4" >本社</option>
+    </select>
+    部署選択 :
+    <select name="departmentId">
+        <option value="" ></option>
+        <option value="1" >営業部</option>
+        <option value="2" >技術部</option>
+        <option value="3" >総務人事部</option>
+        <option value="4" >情報管理部</option>
+    </select>
+    <div>
+        <input class="newUserButton" type="submit" value="新規ユーザー登録"/>
+        <input type="hidden" name="isStopped" value="0"/>
+    </div>
+</form>
+</body>
+</html>

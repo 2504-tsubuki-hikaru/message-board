@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "users")
@@ -40,10 +40,10 @@ public class User {
     private Integer isStopped;
 
     @Column
-    private LocalDateTime createdDate;
+    private Date createdDate;
 
     @Column
-    private LocalDateTime updatedDate;
+    private Date updatedDate;
 
 }
 
