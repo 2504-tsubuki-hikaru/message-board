@@ -30,6 +30,11 @@
         <input type="submit" onclick="return confirm('本当に変更しますか？');" value="変更">
         <input type="hidden" name="id" th:value="${usd.id}"/>
     </form>
+    <div class="userEdit">
+        <a th:href="@{/userEdit/{id}(id=${usd.id})}">
+            <input type="button" value="編集" class="button">
+        </a>
+    </div>
 </div>
 
 </body>

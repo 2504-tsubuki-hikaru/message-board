@@ -1,5 +1,6 @@
 package com.example.keijiban.controller;
 
+import com.example.keijiban.controller.form.UserForm;
 import com.example.keijiban.controller.form.UserRegistrationForm;
 import com.example.keijiban.dto.UserBranchDepartDto;
 import com.example.keijiban.service.UserBranchDepartService;
@@ -59,9 +60,7 @@ public class UserManagementController {
     @GetMapping("/registration")
     public ModelAndView userRegistration() {
         ModelAndView mav = new ModelAndView();
-        //ユーザー情報取得（部署名と支店名を含む）
-        //List<UserBranchDepartDto> udbData = userBranchDepartService.findAllUserBranchDepart();
-        //mav.addObject("udbData", udbData);
+        mav.addObject("formModel", new  UserRegistrationForm());
         mav.setViewName("userRegistration");
         return mav;
     }
@@ -84,7 +83,8 @@ public class UserManagementController {
         //存在している場合＝true
         if (usersService.existsByAccount(urForm.getAccount())) {
             ModelAndView mav = new ModelAndView();
-            mav.addObject("errorMessages", "アカウントが重複しています");
+            mav.addObject("accountError", "アカウントが重複しています");
+            mav.addObject("formModel", urForm);
             mav.setViewName("/userRegistration");
             return mav;
         }
@@ -92,24 +92,60 @@ public class UserManagementController {
         //パスワードと確認用パスワードが一致しているかの確認
         if (!urForm.getPassword().equals(urForm.getConfirmPassword())) {
             ModelAndView mav = new ModelAndView();
-            mav.addObject("errorMessages", "パスワードと確認用パスワードが一致しません");
+            mav.addObject("passwordError", "パスワードと確認用パスワードが一致しません");
+            mav.addObject("formModel", urForm);
             mav.setViewName("/userRegistration");
             return mav;
         }
 
-        //支社と部署の組み合わせに矛盾がないかチェック
+        //支社と部署のIDを取り出す。
         String branch = String.valueOf(urForm.getBranchId());
-        String dept = String.valueOf(urForm.getDepartmentId());
+        String depart = String.valueOf(urForm.getDepartmentId());
 
-        if (Arrays.asList("1","2","3").contains(branch) && Arrays.asList("3","4").contains(dept)) {
+        //支社と部署の組み合わせに矛盾がないかチェック
+        if ((Arrays.asList("1", "2", "3").contains(branch) && Arrays.asList("3", "4").contains(depart)) ||
+                (branch.equals("4") && Arrays.asList("1", "2", "3").contains(depart))) {
             ModelAndView mav = new ModelAndView();
-            mav.addObject("errorMessages", "支社と部署の組み合わせが不正です");
-            mav.setViewName("/userManagement");
+            mav.addObject("branchError", "支社と部署の組み合わせが不正です");
+            mav.addObject("formModel", urForm);
+            mav.setViewName("/userRegistration");
             return mav;
-            }
+        }
+
 
         //ユーザー新規登録
         usersService.saveNewUser(urForm);
+        return new ModelAndView("redirect:/management");
+    }
+
+    /*
+     * ユーザー編集画面遷移処理
+     */
+    @GetMapping("/userEdit/{id}")
+    public ModelAndView userEdit(@PathVariable("id") int id) {
+        ModelAndView mav = new ModelAndView();
+        UserForm userForm = usersService.findById(id);
+        mav.addObject("userDate", userForm);
+        mav.setViewName("userEdit");
+        return mav;
+    }
+
+    /*
+     * ユーザー編集処理
+     */
+    @PostMapping("/updateUser/{id}")
+    public ModelAndView updateStatus(@RequestParam("id") Integer id, @ModelAttribute("userDate")
+                                        @Validated UserForm user, BindingResult result) {
+        if (result.hasErrors()) {
+            ModelAndView mav = new ModelAndView();
+            mav.setViewName("/userEdit");
+            //引数をそのまま返す。
+            mav.addObject("formModel", user);
+            return mav;
+        }
+
+        user.setId(id);
+        usersService.saveEditUser(user);
         return new ModelAndView("redirect:/management");
     }
 }

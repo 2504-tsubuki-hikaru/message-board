@@ -2,6 +2,7 @@ package com.example.keijiban.repository.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Date;
 @Table(name = "branches")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Branch {
 
     @Id
@@ -25,4 +27,5 @@ public class Branch {
 
     @Column
     private Date updatedDate;
+
 }

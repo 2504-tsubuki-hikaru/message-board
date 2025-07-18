@@ -1,23 +1,51 @@
 package com.example.keijiban.controller.form;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @Setter
 public class UserForm implements Serializable {
 
+    private Integer Id;
+
     @NotBlank(message="アカウントを入力してください")
     private String account;
 
-    @NotBlank(message="パスワードを入力してください")
     private String password;
+
+    private String confirmPassword;
+
+    @NotBlank(message = "氏名を入力してください")
+    private String name;
+
+    @NotNull(message = "支店を選択してください")
+    private Integer branchId;
+
+    @NotNull(message = "部署を選択してください")
+    private Integer departmentId;
 
     private int isStopped;
 
-    private Integer userId;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date updatedDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date createdDate;
+
+    private Integer UserId;
 }
+
+
+
+
+
+
+
+

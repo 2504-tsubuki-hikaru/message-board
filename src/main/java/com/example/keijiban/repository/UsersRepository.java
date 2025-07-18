@@ -20,4 +20,18 @@ public interface UsersRepository extends JpaRepository<User, Integer> {
 
     //account重複チェック
     boolean existsByAccount(String account);
+
+    //passwordがnullだった時に対応する編集登録
+    @Modifying
+    @Transactional
+    @Query("UPDATE User u SET u.account = :account, u.name = :name, u.branch.id = :branchId, u.department.id = :departmentId, u.isStopped = :isStopped, u.updatedDate = CURRENT_TIMESTAMP, u.password = :password WHERE u.id = :id")
+    void updateUser(
+            @Param("id") Integer id,
+            @Param("account") String account,
+            @Param("name") String name,
+            @Param("branchId") Integer branchId,
+            @Param("departmentId") Integer departmentId,
+            @Param("isStopped") Boolean isStopped,
+            @Param("password") String password
+    );
 }

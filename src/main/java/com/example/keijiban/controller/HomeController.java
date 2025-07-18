@@ -1,7 +1,7 @@
 package com.example.keijiban.controller;
 
 import com.example.keijiban.controller.form.CommentForm;
-import com.example.keijiban.controller.form.UserForm;
+import com.example.keijiban.controller.form.LoginForm;
 import com.example.keijiban.dto.UserCommentDto;
 import com.example.keijiban.dto.UserMessageDto;
 import com.example.keijiban.service.CommentService;
@@ -65,7 +65,7 @@ public class HomeController {
         List<UserCommentDto> userCommentData = userCommentService.getAllUserComments();
 
         //ログインユーザー情報
-        UserForm loginUser = (UserForm)session.getAttribute("loginUser");
+        LoginForm loginUser = (LoginForm)session.getAttribute("loginUser");
         //バリデーションのエラーメッセージをsessionから取得(コメント投稿)
         List<String> errorMessages = (List<String>)session.getAttribute("errorMessages");
         //int型にすると!=nullが使えないのでIntegerを使う（ラッパークラス）
@@ -124,7 +124,7 @@ public class HomeController {
             return mav;
         }
         //ここでログインユーザーのIDをとっていないから最初にログインした奴のuserIdでDB登録されていた。
-        UserForm loginUser = (UserForm)session.getAttribute("loginUser");
+        LoginForm loginUser = (LoginForm)session.getAttribute("loginUser");
         //userIdをmessageFormに格納
         commentForm.setUserId(loginUser.getUserId());
         //コメント内容をDBへ登録

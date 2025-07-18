@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" >
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>ユーザ登録画面</title>
-    ユーザ登録画面
+    <title>Title</title>
+  ユーザー編集画面
 </head>
 <body>
-<form method="post" th:action="@{/newUser}" th:object="${formModel}">
+<form method="post" th:action="@{/updateUser/{id}(id=${userDate.id})}" th:object="${userDate}">
+
     <!-- アカウント名 -->
-    <div th:if="${accountError}" th:text="${accountError}" style="color:red;"></div>
     <div class="errorMessage" th:if="${#fields.hasErrors('account')}" th:errors="*{account}" style="color:red;"></div>
     <div class="label">アカウント名</div>
     <input type="text" th:field="*{account}" class="tweet-box"/><br/>
 
     <!-- パスワード -->
     <div class="errorMessage" th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:red;"></div>
-    <div th:if="${passwordError}" th:text="${passwordError}" style="color:red;"></div>
     <div class="label">パスワード</div>
     <input type="text" th:field="*{password}" class="tweet-box"/><br/>
 
@@ -55,8 +54,10 @@
     </div>
 
     <div>
-        <input class="newUserButton" type="submit" value="新規ユーザー登録"/>
-        <input type="hidden" name="isStopped" value="0"/>
+        <input class="newUserButton" type="submit" value="ユーザー編集"/>
+        <input type="hidden" name="id" th:value="${userDate.id}"/>
+        <input type="hidden" name="isStopped" th:value="${userDate.isStopped}"/>
+        <input type="hidden" name="createdDate" th:value="${userDate.createdDate}"/>
     </div>
 </form>
 </body>
