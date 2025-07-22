@@ -3,6 +3,7 @@ package com.example.keijiban.controller;
 import com.example.keijiban.controller.form.UserForm;
 import com.example.keijiban.controller.form.UserRegistrationForm;
 import com.example.keijiban.dto.UserBranchDepartDto;
+import com.example.keijiban.dto.UserFilterDto;
 import com.example.keijiban.service.UserBranchDepartService;
 import com.example.keijiban.service.UsersService;
 import jakarta.servlet.http.HttpSession;
@@ -33,13 +34,19 @@ public class UserManagementController {
     @GetMapping("/management")
     public ModelAndView newPost() {
 
+        UserFilterDto filter = (UserFilterDto)session.getAttribute("Filter");
+
+        if (filter.getBranchId() != 4 && filter.getDepartmentId() != 3) {
+            session.setAttribute("notAccess", "無効なアクセスです");
+            return new ModelAndView("redirect:/home");
+        }
+
         ModelAndView mav = new ModelAndView();
         //ユーザー情報取得（部署名と支店名を含む）
         List<UserBranchDepartDto> udbData = userBranchDepartService.findAllUserBranchDepart();
 
         mav.addObject("udbData", udbData);
         mav.setViewName("userManagement");
-
         return mav;
     }
 
@@ -71,6 +78,14 @@ public class UserManagementController {
     @PostMapping("/newUser")
     public ModelAndView newUser(@ModelAttribute("formModel") @Validated UserRegistrationForm urForm,
                                 BindingResult result) {
+
+        UserFilterDto filter = (UserFilterDto)session.getAttribute("Filter");
+
+        if (filter.getBranchId() != 4 && filter.getDepartmentId() != 3) {
+            session.setAttribute("notAccess", "無効なアクセスです");
+            return new ModelAndView("redirect:/home");
+        }
+
         if (result.hasErrors()) {
             ModelAndView mav = new ModelAndView();
             mav.setViewName("/userRegistration");
@@ -104,7 +119,7 @@ public class UserManagementController {
 
         //支社と部署の組み合わせに矛盾がないかチェック
         if ((Arrays.asList("1", "2", "3").contains(branch) && Arrays.asList("3", "4").contains(depart)) ||
-                (branch.equals("4") && Arrays.asList("1", "2", "3").contains(depart))) {
+                (branch.equals("4") && Arrays.asList("1", "2").contains(depart))) {
             ModelAndView mav = new ModelAndView();
             mav.addObject("branchError", "支社と部署の組み合わせが不正です");
             mav.addObject("formModel", urForm);
@@ -123,6 +138,14 @@ public class UserManagementController {
      */
     @GetMapping("/userEdit/{id}")
     public ModelAndView userEdit(@PathVariable("id") int id) {
+
+        UserFilterDto filter = (UserFilterDto)session.getAttribute("Filter");
+
+        if (filter.getBranchId() != 4 && filter.getDepartmentId() != 3) {
+            session.setAttribute("notAccess", "無効なアクセスです");
+            return new ModelAndView("redirect:/home");
+        }
+
         ModelAndView mav = new ModelAndView();
         UserForm userForm = usersService.findById(id);
         mav.addObject("userDate", userForm);
@@ -141,6 +164,39 @@ public class UserManagementController {
             mav.setViewName("/userEdit");
             //引数をそのまま返す。
             mav.addObject("formModel", user);
+            return mav;
+        }
+
+        //accountの重複チェック(JPAメソッドのexistsを使う)
+        //存在している場合＝true
+        if (usersService.existsByAccount(user.getAccount())) {
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("accountError", "アカウントが重複しています");
+            mav.addObject("formModel", user);
+            mav.setViewName("/userEdit");
+            return mav;
+        }
+
+        //パスワードと確認用パスワードが一致しているかの確認
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("passwordError", "パスワードと確認用パスワードが一致しません");
+            mav.addObject("formModel", user);
+            mav.setViewName("/userEdit");
+            return mav;
+        }
+
+        //支社と部署のIDを取り出す。
+        String branch = String.valueOf(user.getBranchId());
+        String depart = String.valueOf(user.getDepartmentId());
+
+        //支社と部署の組み合わせに矛盾がないかチェック
+        if ((Arrays.asList("1", "2", "3").contains(branch) && Arrays.asList("3", "4").contains(depart)) ||
+                (branch.equals("4") && Arrays.asList("1", "2", "3").contains(depart))) {
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("branchError", "支社と部署の組み合わせが不正です");
+            mav.addObject("formModel", user);
+            mav.setViewName("/userEdit");
             return mav;
         }
 

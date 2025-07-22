@@ -9,11 +9,13 @@
 <form method="post" th:action="@{/updateUser/{id}(id=${userDate.id})}" th:object="${userDate}">
 
     <!-- アカウント名 -->
+    <div th:if="${accountError}" th:text="${accountError}" style="color:red;"></div>
     <div class="errorMessage" th:if="${#fields.hasErrors('account')}" th:errors="*{account}" style="color:red;"></div>
     <div class="label">アカウント名</div>
     <input type="text" th:field="*{account}" class="tweet-box"/><br/>
 
     <!-- パスワード -->
+    <div th:if="${passwordError}" th:text="${passwordError}" style="color:red;"></div>
     <div class="errorMessage" th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:red;"></div>
     <div class="label">パスワード</div>
     <input type="text" th:field="*{password}" class="tweet-box"/><br/>

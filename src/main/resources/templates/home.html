@@ -6,10 +6,10 @@
     ホーム画面
 </head>
 <body>
+<div th:if="${notAccess}" class="loginFailure" th:text="${notAccess}" style="color:red;" ></div>
 <!--ログアウト処理-->
     <a href="./"></a>
-    <a href="setting"></a>
-    <a href="/login">ログアウト</a>
+    <a href="/logout">ログアウト</a>
 <!--新規投稿ボタン表示-->
     <div class="newPost">
         <a href="/new">
@@ -45,7 +45,7 @@
         </div>
         <div class="delete-button" >
             <!--ログインユーザーが自分で投稿した物だけ削除ボタンを表示-->
-            <div th:if ="${ loginUser.userId == userMessageDate.userId }">
+            <div th:if ="${ loginUser.id == userMessageDate.userId }">
                 <form th:action="@{/delete/{id}(id=${userMessageDate.messageId})}" th:method="delete">
                     <input type="submit" onclick="return confirm('本当に削除しますか？');" value="削除">
                 </form>
@@ -56,7 +56,7 @@
             th:if="${userCommentDate.messageId} == ${userMessageDate.messageId}">
             <div>   コメント　: <span th:text="${userCommentDate.text}"/></div>
             <!--ログインユーザーが自分でコメントした物だけ削除ボタンを表示-->
-            <div th:if ="${ loginUser.userId == userCommentDate.userId }">
+            <div th:if ="${ loginUser.id == userCommentDate.userId }">
                 <form th:action="@{/commentDelete/{id}(id=${userCommentDate.id})}" th:method="delete">
                     <input type="submit" onclick="return confirm('本当に削除しますか？');" value="削除">
                 </form>

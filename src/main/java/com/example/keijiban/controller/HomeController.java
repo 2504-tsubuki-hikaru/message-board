@@ -1,9 +1,9 @@
 package com.example.keijiban.controller;
 
 import com.example.keijiban.controller.form.CommentForm;
-import com.example.keijiban.controller.form.LoginForm;
 import com.example.keijiban.dto.UserCommentDto;
 import com.example.keijiban.dto.UserMessageDto;
+import com.example.keijiban.repository.entity.User;
 import com.example.keijiban.service.CommentService;
 import com.example.keijiban.service.MessageService;
 import com.example.keijiban.service.UserCommentService;
@@ -65,9 +65,12 @@ public class HomeController {
         List<UserCommentDto> userCommentData = userCommentService.getAllUserComments();
 
         //ログインユーザー情報
-        LoginForm loginUser = (LoginForm)session.getAttribute("loginUser");
+        User loginUser = (User)session.getAttribute("loginUser");
         //バリデーションのエラーメッセージをsessionから取得(コメント投稿)
         List<String> errorMessages = (List<String>)session.getAttribute("errorMessages");
+        //管理者権限フィルターのエラーメッセージ
+        String notAccess = (String)session.getAttribute("notAccess");
+        mav.addObject("notAccess", notAccess);
         //int型にすると!=nullが使えないのでIntegerを使う（ラッパークラス）
         Integer messageId = (Integer) session.getAttribute("messageId");
         //初期表示のエラー回避
@@ -85,6 +88,7 @@ public class HomeController {
         //セッションの破棄(エラーメッセージが残ってしまうため)
         session.removeAttribute("errorMessages");
         session.removeAttribute("userId");
+        session.removeAttribute("notAccess");
 
         return mav;
     }
@@ -124,9 +128,9 @@ public class HomeController {
             return mav;
         }
         //ここでログインユーザーのIDをとっていないから最初にログインした奴のuserIdでDB登録されていた。
-        LoginForm loginUser = (LoginForm)session.getAttribute("loginUser");
+        User user = (User)session.getAttribute("loginUser");
         //userIdをmessageFormに格納
-        commentForm.setUserId(loginUser.getUserId());
+        commentForm.setUserId(user.getId());
         //コメント内容をDBへ登録
         commentService.commentAdd(commentForm);
         return new ModelAndView("redirect:/home");

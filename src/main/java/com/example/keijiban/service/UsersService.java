@@ -6,7 +6,6 @@ import com.example.keijiban.repository.UsersRepository;
 import com.example.keijiban.repository.entity.Branch;
 import com.example.keijiban.repository.entity.Department;
 import com.example.keijiban.repository.entity.User;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -93,7 +92,6 @@ public class UsersService {
     }
 
     //ユーザー情報編集
-    //ユーザー情報編集
     public void saveEditUser(UserForm editUser) {
         User user = setEditUserEntity(editUser);
         usersRepository.updateUser(user);
@@ -126,5 +124,4 @@ public class UsersService {
         }
         return users;
     }
-
 }

@@ -21,17 +21,22 @@ public interface UsersRepository extends JpaRepository<User, Integer> {
     //account重複チェック
     boolean existsByAccount(String account);
 
-    //passwordがnullだった時に対応する編集登録
+    //passwordが無い時は更新しないJPQL文
     @Modifying
     @Transactional
-    @Query("UPDATE User u SET u.account = :account, u.name = :name, u.branch.id = :branchId, u.department.id = :departmentId, u.isStopped = :isStopped, u.updatedDate = CURRENT_TIMESTAMP, u.password = :password WHERE u.id = :id")
-    void updateUser(
-            @Param("id") Integer id,
-            @Param("account") String account,
-            @Param("name") String name,
-            @Param("branchId") Integer branchId,
-            @Param("departmentId") Integer departmentId,
-            @Param("isStopped") Boolean isStopped,
-            @Param("password") String password
-    );
+    @Query("""
+    UPDATE User u
+        SET u.account = :#{#user.account},
+            u.name = :#{#user.name},
+            u.branch.id = :#{#user.branch.id},
+            u.department.id = :#{#user.department.id},
+            u.isStopped = :#{#user.isStopped},
+            u.updatedDate = CURRENT_TIMESTAMP,
+            u.password = CASE WHEN :#{#user.password} IS NOT NULL AND TRIM(:#{#user.password}) <> '' 
+                          THEN :#{#user.password} 
+                          ELSE u.password 
+                     END
+    WHERE u.id = :#{#user.id}
+    """)
+    void updateUser(@Param("user") User user);
 }
