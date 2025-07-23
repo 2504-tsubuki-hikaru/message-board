@@ -1,0 +1,257 @@
+.page-specific-bg {
+	background-color: #8bb3d9;/*#ffd19a;*/
+	font-family: 'Ubuntu', sans-serif;
+}
+
+.main {
+	background-color: #FFFFFF;
+	width: 400px;
+	height: 400px;
+	margin: 7em auto;
+	border-radius: 1.5em;
+	box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+
+.sign {
+	padding-top: 40px;
+	color: #8bb3d9;/*#fa9f32;*/
+	font-family: 'Ubuntu', sans-serif;
+	font-weight: bold;
+	font-size: 23px;
+}
+
+.loginTextArea {
+	width: 76%;
+	color: rgb(38, 50, 56);
+	font-weight: 700;
+	font-size: 14px;
+	letter-spacing: 1px;
+	background: rgba(136, 126, 126, 0.04);
+	padding: 10px 20px;
+	border: none;
+	border-radius: 20px;
+	outline: none;
+	box-sizing: border-box;
+	border: 2px solid rgba(0, 0, 0, 0.02);
+	margin-bottom: 50px;
+	margin-left: 46px;
+	text-align: center;
+	margin-bottom: 27px;
+	font-family: 'Ubuntu', sans-serif;
+}
+
+.loginButton {
+	cursor: pointer;
+	border-radius: 5em;
+	color: #fff;
+	background: #8bb3d9; /*linear-gradient(to right, #ffb257, #ffb257);*/
+	border: 0;
+	padding-left: 40px;
+	padding-right: 40px;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	font-family: 'Ubuntu', sans-serif;
+	margin-left: 35%;
+	font-size: 13px;
+	box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+}
+
+.loginFailure {
+margin-left: 110px;
+}
+
+.loginErrorMessage {
+margin-left: 90px;
+}
+
+/*top.html*/
+.header {
+display: flex;                   /* 横並びにする */
+  justify-content: center;       /* 横方向に中央寄せ */
+  align-items: center;           /* 縦方向に中央寄せ（高さが異なる要素がある場合に有効） */
+  gap: 20px;
+}
+
+.h1 {
+font-size: 30px;
+  text-align: center;
+}
+
+.newButton {
+background-color: #007BFF; /* ブートストラップ風の青 */
+    color: white;
+    border: none; /* 枠線をなくす */
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 40px;
+}
+
+.umButton {
+background-color: #28a745; /* ブートストラップ風の緑 */
+    color: white;
+    border: none; /* 枠線をなくす */
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 60px;
+}
+
+.outButton {
+background-color: #dc3545;
+    color: white;
+    border: none; /* 枠線をなくす */
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 60px;
+
+}
+
+.date-group {
+margin-top: 10px;
+margin-left: 40px;
+}
+
+.selectButton {
+background-color: #007BFF;
+color: white;
+    border: none; /* 枠線をなくす */
+    padding: 7px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 20px;
+}
+
+.mainHome {
+background-color: #f0f8ff;
+    padding: 15px;
+    margin: 20px auto;       /* 上下20px、左右はautoで中央揃え */
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    width: 80%;              /* 横幅 */
+    max-width: 800px;
+}
+
+.message-table {
+    width: 100%;
+    table-layout: fixed; /* 均等配置のキー */
+    border-collapse: collapse;
+}
+
+.message-table th {
+    text-align: center;
+    padding: 10px;
+}
+
+.answer-table {
+ width: 100%;
+    table-layout: fixed;
+}
+
+.main-message {
+margin-top: 10px;
+margin-bottom: 10px;
+}
+
+.accountTable {
+display: flex;
+gap: 20px;           /* 要素間の余白 */
+align-items: center;
+}
+
+.calendar {
+display: flex;
+justify-content: center;
+gap: 20px;
+}
+
+.loginButtons {
+display: flex;
+justify-content: center;
+gap: 20px;
+}
+
+.title-category {
+display: flex;           /* 要素を横並びに */
+  gap: 20px;               /* 要素間の余白 */
+  align-items: center;
+}
+
+.comment-Button {
+background-color: #007BFF;
+color: white;
+    border: none; /* 枠線をなくす */
+    padding: 7px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 20px;
+}
+
+.hdButton {
+background-color: #dc3545;
+    color: white;
+    border: none; /* 枠線をなくす */
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 10px;
+    margin-left: 60px;
+}
+
+.comment-row {
+display: flex;     /* 横並びにする */
+  gap: 10px;       /* 要素間に余白を入れる */
+  align-items: center;
+ }
+
+.name {
+}
+
+.account {
+color: #696969;
+}
+
+.date {
+color: #696969;
+}
+
+
+
+/*new.html*/
+
+.newPost {
+font-size: 18px;
+  text-align: center;
+}
+
+.new-main {
+  background-color: #FFFFFF;
+  width: 400px;
+  height: 400px;
+  margin: 2em auto;
+  border-radius: 1.5em; /*角を丸くする*/
+  box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+  text-align: center;
+}
+
+.addButton {
+background-color: #007BFF;
+color: white;
+    border: none; /* 枠線をなくす */
+    padding: 7px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 20px;
+}
+
+.color {
+background-color: #FFFFEE;
+
+}

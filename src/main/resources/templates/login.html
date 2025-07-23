@@ -2,21 +2,22 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="styleSheet">
     <title>ログイン画面</title>
-    <div class="title" >ログイン画面</div>
 </head>
-<body>
-    <form th:action="@{/loginProcess}" th:method="post">
-        <div th:object="${formModel}" >
-            <div th:if="${errorMessages}" class="loginFailure" th:text="${errorMessages}" style="color:red;" ></div>
-            <div class="errorMessage" th:if="${#fields.hasErrors('account')}" th:errors="*{account}" style="color:red;"></div>
-            <div class="label">アカウント名</div>
-            <textarea class="tweet-box" name="account" rows="2" cols="20"></textarea><br/>
-            <div class="errorMessage" th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:red;"></div>
-            <div class="label">パスワード</div>
-            <textarea class="tweet-box" name="password" rows="2" cols="20"></textarea><br/>
-            <input class="loginButton" type="submit" value="ログイン"/>
-        </div>
-    </form>
+<body class="page-specific-bg">
+    <div class="main">
+        <p class="sign" align="center">掲示板</p>
+        <form th:action="@{/loginProcess}" th:method="post">
+            <div th:object="${formModel}" >
+                <div th:if="${errorMessages}" class="loginFailure" th:text="${errorMessages}" style="color:red;" ></div>
+                <div class="loginErrorMessage" th:if="${#fields.hasErrors('account')}" th:errors="*{account}" style="color:red;"></div>
+                <input class="loginTextArea" type="text" name="account" placeholder="アカウント名"/><br/>
+                <div class="loginErrorMessage" th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:red;"></div>
+                <input class="loginTextArea" type="text" name="password" placeholder="パスワード" /><br/>
+                <input class="loginButton" type="submit" value="ログイン"/>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
