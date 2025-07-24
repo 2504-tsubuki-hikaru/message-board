@@ -5,7 +5,7 @@
     <link th:href="@{/css/style.css}" rel="styleSheet">
     <title>ホーム画面</title>
     <div class="header">
-        <h1>PostList</h1>
+        <h1>掲示板</h1>
     </div>
 </head>
 <body>
@@ -18,10 +18,12 @@
         </a>
     </div>
     <!--ユーザー管理画面遷移ボタン表示-->
+    <div th:if="${loginUser.department != null and loginUser.department.id == 3}">
     <div class="userManagement">
         <a href="/management">
             <input type="button" value="ユーザー管理画面" class="umButton">
         </a>
+    </div>
     </div>
     <div>
         <a href="/logout">
@@ -36,7 +38,7 @@
             <label>日付 :</label>
             <input class="strDay" type="date" name="start" th:value="${start}"> 　～
             　<input class="endDay" type="date" name="end" th:value="${end}">
-            <label>カテゴリー :</label>
+            <label>  カテゴリー :</label>
             <input type="text" name="category" class="category" th:text="${category}"/>
             <input type="submit" class="selectButton" value="絞込">
         </div>
@@ -54,7 +56,8 @@
         <div> 件名　: <span th:text="${userMessageDate.title}"/></div>
         <div>カテゴリー　: <span th:text="${userMessageDate.category}"/></div>
     </div>
-        <div> 本文　: <span th:text="${userMessageDate.text}"/></div>
+        本文：<div class="div-pre" th:text="${userMessageDate.text}"></div>
+        <!--<div class="div-pre"> 本文　: <span th:text="${userMessageDate.text}"/></div>-->
     <div class="delete-button" >
         <!--ログインユーザーが自分で投稿した物だけ削除ボタンを表示-->
         <div th:if ="${ loginUser.id == userMessageDate.userId }">
@@ -67,7 +70,7 @@
     <div th:each="userCommentDate : ${userCommentDate}"
          th:if="${userCommentDate.messageId} == ${userMessageDate.messageId}">
         <div class="comment-row">
-        <div>   コメント　: <span th:text="${userCommentDate.text}"/></div>
+        <div class="div-pre">   コメント　: <span th:text="${userCommentDate.text}"/></div>
         <!--ログインユーザーが自分でコメントした物だけ削除ボタンを表示-->
         <div th:if ="${ loginUser.id == userCommentDate.userId }">
             <form th:action="@{/commentDelete/{id}(id=${userCommentDate.id})}" th:method="delete">

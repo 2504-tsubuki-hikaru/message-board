@@ -2,40 +2,85 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="styleSheet">
     <title>ユーザー管理画面</title>
-    <div>ユーザー管理画面</div>
+    <div class="umTitle">ユーザー管理画面</div>
 </head>
 <body>
 <!--ユーザー登録画面遷移ボタン表示-->
 <div class="userRegistration">
     <a href="/registration">
-        <input type="button" value="ユーザ―登録画面" class="button">
+        <input type="button" value="ユーザ―新規登録画面" class="urButton">
     </a>
 </div>
 <!--ユーザー情報の表示-->
-<div th:each="usd : ${udbData}" >
-    <div> アカウント　: <span th:text="${usd.account}"/></div>
-    <div> 名前　: <span th:text="${usd.name}"/></div>
-    <div> 支店名　: <span th:text="${usd.branchName}"/></div>
-    <div> 支店ID　: <span th:text="${usd.branchId}"/></div>
-    <div> 部署名　: <span th:text="${usd.departmentName}"/></div>
-    <div> 部署名ID　: <span th:text="${usd.departmentId}"/></div>
-    <div> 停止中　: <span th:text="${usd.isStopped}"/></div>
+<div class="userMainHome">
+    登録アカウント一覧
+    <div class="userMainHome">
+        <table class="urTitle">
+            <colgroup>
+                <col style="width: 23%;"> <!-- アカウント -->
+                <col style="width: 23%;"> <!-- 名前 -->
+                <col style="width: 10%;"> <!-- 支店名 -->
+                <col style="width: 10%;"> <!-- 部署名 -->
+                <col style="width: 8%;"> <!-- 活動状況 -->
+                <col style="width: 16%;">
+                <col style="width: 10%;">
+            </colgroup>
+            <tr>
+                <th class="task-item">アカウント</th>
+                <th class="status-item">名前</th>
+                <th class="limit-item">支店名</th>
+                <th class="delete">部署名</th>
+                <th class="edit">活動状況</th>
+                <th class="edit"></th>
+                <th class="edit"></th>
+            </tr>
+        </table>
 
-    <form th:action="@{/update/{id}(id=${usd.id})}" th:method="put">
-        <select name="isStopped">
-            <option value="0" th:selected="${usd.isStopped == 0}">復活</option>
-            <option value="1" th:selected="${usd.isStopped == 1}">停止</option>
-        </select>
-        <input type="submit" onclick="return confirm('本当に変更しますか？');" value="変更">
-        <input type="hidden" name="id" th:value="${usd.id}"/>
-    </form>
-    <div class="userEdit">
-        <a th:href="@{/userEdit/{id}(id=${usd.id})}">
-            <input type="button" value="編集" class="button">
-        </a>
+        <div th:each="usd : ${udbData}">
+            <table class="urAnswer">
+                <colgroup>
+                    <col style="width: 23%;"> <!-- アカウント -->
+                    <col style="width: 23%;"> <!-- 名前 -->
+                    <col style="width: 10%;"> <!-- 支店名 -->
+                    <col style="width: 10%;"> <!-- 部署名 -->
+                    <col style="width: 8%;"> <!-- 活動状況 -->
+                    <col style="width: 16%;">
+                    <col style="width: 10%;">
+                </colgroup>
+                <tr>
+                    <td><span th:text="${usd.account}"/></td>
+                    <td><span th:text="${usd.name}"/></td>
+                    <td><span th:text="${usd.branchName}"/></td>
+                    <td><span th:text="${usd.departmentName}"/></td>
+                    <td>
+                        <span th:if="${usd.isStopped == 0}">稼働</span>
+                        <span th:if="${usd.isStopped == 1}">停止</span>
+                    </td>
+                    <td>
+                        <form th:action="@{/update/{id}(id=${usd.id})}" th:method="put">
+                            <select name="isStopped">
+                                <option value="0" th:selected="${usd.isStopped == 0}">復活</option>
+                                <option value="1" th:selected="${usd.isStopped == 1}">停止</option>
+                            </select>
+                            <!--<div th:if="${udbData.id} != ${filter.id}">-->
+                            <input type="submit" onclick="return confirm('本当に変更しますか？');" value="変更" class="changButton">
+                            <input type="hidden" name="id" th:value="${usd.id}"/>
+                            <!--</div>-->
+                        </form>
+                    </td>
+                    <td>
+                        <div class="userEdit">
+                            <a th:href="@{/userEdit/{id}(id=${usd.id})}">
+                                <input type="button" value="編集" class="EditButton">
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
-
 </body>
 </html>

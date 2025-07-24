@@ -2,15 +2,16 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" >
 <head>
     <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="styleSheet">
     <title>ユーザ登録画面</title>
-    ユーザ登録画面
+    <div class="userNewTitle">ユーザー新規登録画面</div>
 </head>
-<body>
-<form method="post" th:action="@{/newUser}" th:object="${formModel}">
+<body class="urColor">
+<form method="post" th:action="@{/newUser}" th:object="${formModel}" class="mainRegistration">
     <!-- アカウント名 -->
     <div th:if="${accountError}" th:text="${accountError}" style="color:red;"></div>
     <div class="errorMessage" th:if="${#fields.hasErrors('account')}" th:errors="*{account}" style="color:red;"></div>
-    <div class="label">アカウント名</div>
+    <div class="urLabel">アカウント名</div>
     <input type="text" th:field="*{account}" class="tweet-box"/><br/>
 
     <!-- パスワード -->
@@ -31,8 +32,9 @@
 
     <!-- 支社 -->
     <div th:if="${branchError}" th:text="${branchError}" style="color:red;"></div>
+    <th:if="
     <div class="errorMessage" th:if="${#fields.hasErrors('branchId')}" th:errors="*{branchId}" style="color:red;"></div>
-    <div>支社選択:
+    <div class="pulldown">支社選択:
         <select th:field="*{branchId}">
             <option value="">-- 選択してください --</option>
             <option value="1">A支社</option>

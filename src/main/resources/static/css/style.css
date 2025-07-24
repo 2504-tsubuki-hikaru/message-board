@@ -231,7 +231,7 @@ font-size: 18px;
 }
 
 .new-main {
-  background-color: #FFFFFF;
+  background-color: #F4F5F7;
   width: 400px;
   height: 400px;
   margin: 2em auto;
@@ -253,5 +253,148 @@ color: white;
 
 .color {
 background-color: #FFFFEE;
+}
 
+
+/*userManagement.html*/
+
+.userRegistration {
+display: flex;
+  justify-content: center; /* 水平方向に中央寄せ */
+  margin-bottom: 20px;
+}
+
+.urButton {
+background-color: #28a745; /* ブートストラップ風の緑 */
+    color: white;
+    border: none; /* 枠線をなくす */
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.umTitle {
+ font-size: 25px;
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
+   font-weight: bold;
+}
+
+.urTitle, .urAnswer {
+table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+     border: none;
+}
+
+.userMainHome {
+background-color: #f0f8ff;
+    padding: 10px;
+    margin: 20px auto;       /* 上下20px、左右はautoで中央揃え */
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    width: 90%;              /* 横幅 */
+    max-width: 1500px;
+    border: none;
+}
+
+.urAnswer {
+margin-bottom: 10px;
+width: 100%;
+  table-layout: fixed; /* ← 幅を固定して、colgroup の幅が反映されるように */
+  border-collapse: collapse;
+}
+
+.urTitle {
+margin-bottom: 20px;
+}
+
+.urAnswer td {
+  padding: 8px;
+  text-align: center;
+  font-weight: normal;
+}
+
+.changButton {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 4px 11px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.EditButton {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 4px 11px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+/*userRegistration.html*/
+
+.userNewTitle {
+ font-size: 25px;
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
+   font-weight: bold;
+}
+
+.mainRegistration {
+background-color: #F4F5F7;
+    padding: 10px;
+    margin: 20px auto;       /* 上下20px、左右はautoで中央揃え */
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    width: 90%;              /* 横幅 */
+    max-width: 400px;
+    border-radius: 2.0em;
+    border: none;
+    text-align: center;
+    box-shadow: 0px 10px 30px rgba(4, 0, 1, 0.4);
+}
+
+.urColor {
+background-color:#DDFFFF;
+}
+
+.newUserButton {
+background-color: #007BFF;
+color: white;
+    border: none; /* 枠線をなくす */
+    padding: 7px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.tweet-box {
+margin-bottom: 15px;
+}
+
+.urLabel {
+margin-top: 10px;
+}
+
+.pulldown {
+margin-bottom: 15px;
+}
+
+/*userEdit.html*/
+
+.ueColor {
+background-color: #DDFFDD;
+}
+
+.div-pre {
+    white-space: pre;
 }

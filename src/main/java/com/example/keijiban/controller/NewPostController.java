@@ -2,6 +2,7 @@ package com.example.keijiban.controller;
 
 import com.example.keijiban.controller.form.MessageForm;
 import com.example.keijiban.controller.form.UserForm;
+import com.example.keijiban.repository.entity.User;
 import com.example.keijiban.service.MessageService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +51,11 @@ public class NewPostController {
             return mav;
         }
         //ログインユーザー情報を取得
-        UserForm loginUser = (UserForm)session.getAttribute("loginUser");
+        User loginUser = (User) session.getAttribute("loginUser");
+        messageForm.setUserId(loginUser.getId());
+
         //userIdをmessageFormに格納
-        messageForm.setUserId(loginUser.getUserId());
+        messageForm.setUserId(loginUser.getId());
         messageService.saveMessage(messageForm);
         return new ModelAndView("redirect:/home");
     }

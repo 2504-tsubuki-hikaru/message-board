@@ -46,6 +46,7 @@ public class UserManagementController {
         List<UserBranchDepartDto> udbData = userBranchDepartService.findAllUserBranchDepart();
 
         mav.addObject("udbData", udbData);
+        mav.addObject("filter", filter);
         mav.setViewName("userManagement");
         return mav;
     }
@@ -149,6 +150,7 @@ public class UserManagementController {
         ModelAndView mav = new ModelAndView();
         UserForm userForm = usersService.findById(id);
         mav.addObject("userDate", userForm);
+        mav.addObject("filter", filter);
         mav.setViewName("userEdit");
         return mav;
     }
