@@ -1,7 +1,6 @@
 package com.example.keijiban.controller;
 
 import com.example.keijiban.controller.form.MessageForm;
-import com.example.keijiban.controller.form.UserForm;
 import com.example.keijiban.repository.entity.User;
 import com.example.keijiban.service.MessageService;
 import jakarta.servlet.http.HttpSession;

@@ -31,37 +31,43 @@
     <div class="label">名前</div>
     <input type="text" th:field="*{name}" class="tweet-box"/><br/>
 
-    <div th:if="${userDate.id} != ${filter.id}">
-    <!-- 支社 -->
     <div th:if="${branchError}" th:text="${branchError}" style="color:red;"></div>
-    <div class="errorMessage" th:if="${#fields.hasErrors('branchId')}" th:errors="*{branchId}" style="color:red;"></div>
-    <div class="pulldown">支社選択:
-        <select th:field="*{branchId}">
-            <option value="">-- 選択してください --</option>
-            <option value="1">A支社</option>
-            <option value="2">B支社</option>
-            <option value="3">C支社</option>
-            <option value="4">本社</option>
-        </select>
-    </div>
+    <!-- 編集できる条件：filterが存在していて、自分以外 -->
+    <div th:if="${userDate != null and filter != null and userDate.id != filter.id}">
+        <!-- 支社 -->
+        <div class="errorMessage" th:if="${#fields.hasErrors('branchId')}" th:errors="*{branchId}" style="color:red;"></div>
+        <div class="pulldown">支社選択:
+            <select th:field="*{branchId}">
+                <option value="">-- 選択してください --</option>
+                <option value="1">A支社</option>
+                <option value="2">B支社</option>
+                <option value="3">C支社</option>
+                <option value="4">本社</option>
+            </select>
+        </div>
 
-    <!-- 部署 -->
-    <div class="errorMessage" th:if="${#fields.hasErrors('departmentId')}" th:errors="*{departmentId}" style="color:red;"></div>
-    <div>部署選択:
-        <select th:field="*{departmentId}">
-            <option value="">-- 選択してください --</option>
-            <option value="1">営業部</option>
-            <option value="2">技術部</option>
-            <option value="3">総務人事部</option>
-            <option value="4">情報管理部</option>
-        </select>
-    </div>
+        <!-- 部署 -->
+        <div class="errorMessage" th:if="${#fields.hasErrors('departmentId')}" th:errors="*{departmentId}" style="color:red;"></div>
+        <div>部署選択:
+            <select th:field="*{departmentId}">
+                <option value="">-- 選択してください --</option>
+                <option value="1">営業部</option>
+                <option value="2">技術部</option>
+                <option value="3">総務人事部</option>
+                <option value="4">情報管理部</option>
+            </select>
+        </div>
     </div>
     <div>
         <input class="newUserButton" type="submit" value="ユーザー編集"/>
         <input type="hidden" name="id" th:value="${userDate.id}"/>
         <input type="hidden" name="isStopped" th:value="${userDate.isStopped}"/>
         <input type="hidden" name="createdDate" th:value="${userDate.createdDate}"/>
+        <!-- ログイン本人なら非表示 + hiddenで送信 -->
+        <div th:if="${filter != null and userDate.id == filter.id}">
+            <input type="hidden" th:field="*{branchId}" />
+            <input type="hidden" th:field="*{departmentId}" />
+        </div>
     </div>
 </form>
 </body>

@@ -55,20 +55,25 @@
                     <td><span th:text="${usd.branchName}"/></td>
                     <td><span th:text="${usd.departmentName}"/></td>
                     <td>
-                        <span th:if="${usd.isStopped == 0}">稼働</span>
-                        <span th:if="${usd.isStopped == 1}">停止</span>
+                        <span th:if="${usd.isStopped == 0}">稼働中</span>
+                        <span th:if="${usd.isStopped == 1}">停止中</span>
                     </td>
-                    <td>
+                    <td th:if="${usd.id} != ${filter.id}">
                         <form th:action="@{/update/{id}(id=${usd.id})}" th:method="put">
-                            <select name="isStopped">
-                                <option value="0" th:selected="${usd.isStopped == 0}">復活</option>
-                                <option value="1" th:selected="${usd.isStopped == 1}">停止</option>
-                            </select>
-                            <!--<div th:if="${udbData.id} != ${filter.id}">-->
-                            <input type="submit" onclick="return confirm('本当に変更しますか？');" value="変更" class="changButton">
-                            <input type="hidden" name="id" th:value="${usd.id}"/>
-                            <!--</div>-->
+                            <div th:if="${usd.isStopped == 0}">
+                                <input type="hidden" name="isStopped" value="1" />
+                                <input type="submit" onclick="return confirm('本当に変更しますか？');" value="停止" class="changButton">
+                                <input type="hidden" name="id" th:value="${usd.id}"/>
+                            </div>
+                            <div th:if="${usd.isStopped == 1}">
+                                <input type="hidden" name="isStopped" value="0" />
+                                <input type="submit" onclick="return confirm('本当に変更しますか？');" value="復活" class="chang2Button">
+                                <input type="hidden" name="id" th:value="${usd.id}"/>
+                            </div>
                         </form>
+                    </td>
+                    <td th:if="${usd.id != null and filter.id != null and usd.id == filter.id}">
+                        <span style="color: gray;">－</span>
                     </td>
                     <td>
                         <div class="userEdit">
@@ -84,3 +89,5 @@
 </div>
 </body>
 </html>
+<!--<div th:if="${udbData.id} != ${filter.id}">-->
+

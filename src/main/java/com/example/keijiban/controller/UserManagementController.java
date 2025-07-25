@@ -1,11 +1,13 @@
 package com.example.keijiban.controller;
 
+import com.example.keijiban.cipher.CipherUtil;
 import com.example.keijiban.controller.form.UserForm;
 import com.example.keijiban.controller.form.UserRegistrationForm;
 import com.example.keijiban.dto.UserBranchDepartDto;
 import com.example.keijiban.dto.UserFilterDto;
 import com.example.keijiban.service.UserBranchDepartService;
 import com.example.keijiban.service.UsersService;
+import com.example.keijiban.validation.EditGroup;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -128,7 +130,6 @@ public class UserManagementController {
             return mav;
         }
 
-
         //ユーザー新規登録
         usersService.saveNewUser(urForm);
         return new ModelAndView("redirect:/management");
@@ -164,26 +165,35 @@ public class UserManagementController {
         if (result.hasErrors()) {
             ModelAndView mav = new ModelAndView();
             mav.setViewName("/userEdit");
+            UserFilterDto filter = (UserFilterDto)session.getAttribute("Filter");
             //引数をそのまま返す。
             mav.addObject("formModel", user);
+            mav.addObject("userDate", user);
+            mav.addObject("filter", filter);
             return mav;
         }
 
         //accountの重複チェック(JPAメソッドのexistsを使う)
         //存在している場合＝true
-        if (usersService.existsByAccount(user.getAccount())) {
+        if (usersService.existMyAccount(user.getAccount(), user.getId())) {
             ModelAndView mav = new ModelAndView();
+            UserFilterDto filter = (UserFilterDto)session.getAttribute("Filter");
             mav.addObject("accountError", "アカウントが重複しています");
             mav.addObject("formModel", user);
+            mav.addObject("userDate", user);
             mav.setViewName("/userEdit");
+            mav.addObject("filter", filter);
             return mav;
         }
 
         //パスワードと確認用パスワードが一致しているかの確認
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             ModelAndView mav = new ModelAndView();
+            UserFilterDto filter = (UserFilterDto)session.getAttribute("Filter");
             mav.addObject("passwordError", "パスワードと確認用パスワードが一致しません");
             mav.addObject("formModel", user);
+            mav.addObject("userDate", user);
+            mav.addObject("filter", filter);
             mav.setViewName("/userEdit");
             return mav;
         }
@@ -193,11 +203,20 @@ public class UserManagementController {
         String depart = String.valueOf(user.getDepartmentId());
 
         //支社と部署の組み合わせに矛盾がないかチェック
-        if ((Arrays.asList("1", "2", "3").contains(branch) && Arrays.asList("3", "4").contains(depart)) ||
-                (branch.equals("4") && Arrays.asList("1", "2", "3").contains(depart))) {
+        int branchId = user.getBranchId();
+        int departmentId = user.getDepartmentId();
+
+        // 「支社×営業部・技術部」か「本社×総務人事部・情報管理部」以外はエラー
+        if (!(// 支社(1〜3)は営業部・技術部のみ許可
+                ((branchId >= 1 && branchId <= 3) && (departmentId == 1 || departmentId == 2)) ||
+                        // 本社(4)は総務人事部・情報管理部のみ許可
+                (branchId == 4 && (departmentId == 3 || departmentId == 4)))) {
             ModelAndView mav = new ModelAndView();
+            UserFilterDto filter = (UserFilterDto)session.getAttribute("Filter");
             mav.addObject("branchError", "支社と部署の組み合わせが不正です");
             mav.addObject("formModel", user);
+            mav.addObject("userDate", user);
+            mav.addObject("filter", filter);
             mav.setViewName("/userEdit");
             return mav;
         }

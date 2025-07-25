@@ -21,6 +21,9 @@ public interface UsersRepository extends JpaRepository<User, Integer> {
     //account重複チェック
     boolean existsByAccount(String account);
 
+    // /account重複チェック(ログインしているユーザーは除く）
+    boolean existsByAccountAndIdNot(String account, Integer id);
+
     //passwordが無い時は更新しないJPQL文
     @Modifying
     @Transactional

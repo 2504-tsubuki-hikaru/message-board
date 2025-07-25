@@ -32,7 +32,6 @@
 
     <!-- 支社 -->
     <div th:if="${branchError}" th:text="${branchError}" style="color:red;"></div>
-    <th:if="
     <div class="errorMessage" th:if="${#fields.hasErrors('branchId')}" th:errors="*{branchId}" style="color:red;"></div>
     <div class="pulldown">支社選択:
         <select th:field="*{branchId}">

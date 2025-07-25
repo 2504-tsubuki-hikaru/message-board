@@ -1,5 +1,6 @@
 package com.example.keijiban.service;
 
+import com.example.keijiban.cipher.CipherUtil;
 import com.example.keijiban.controller.form.UserForm;
 import com.example.keijiban.controller.form.UserRegistrationForm;
 import com.example.keijiban.repository.UsersRepository;
@@ -33,6 +34,11 @@ public class UsersService {
         return usersRepository.existsByAccount(account);
     }
 
+
+    public boolean existMyAccount(String account, Integer userId) {
+        return usersRepository.existsByAccountAndIdNot(account, userId);
+    }
+
     //新規ユーザー登録処理
     public void saveNewUser(UserRegistrationForm reqNewUser) {
         User saveuser = setNewUserEntity(reqNewUser);
@@ -52,12 +58,16 @@ public class UsersService {
         //userEntityに詰める。
         users.setBranch(branch);
         users.setDepartment(department);
+
+        //パスワードの暗号化
+        String password = reqNewUser.getPassword();
+        String encPassword = CipherUtil.encrypt(password);
+        users.setPassword(encPassword);
+
         //その他の詰め替え。
         users.setAccount(reqNewUser.getAccount());
-        users.setPassword(reqNewUser.getPassword());
         users.setName(reqNewUser.getName());
         users.setIsStopped(reqNewUser.getIsStopped());
-        //UserEntityをLocalDateからDate型に変更したから変なエラーになったらチェックする。
         users.setCreatedDate(new Date());
         users.setUpdatedDate(new Date());
         return users;
@@ -109,6 +119,7 @@ public class UsersService {
         //userEntityに詰める。
         users.setBranch(branch);
         users.setDepartment(department);
+
         //その他の詰め替え。
         users.setId(editUser.getId());
         users.setAccount(editUser.getAccount());
@@ -120,7 +131,10 @@ public class UsersService {
 
         String pass = editUser.getPassword();
         if (pass != null && !pass.isEmpty()) {
-            users.setPassword(pass);
+            //パスワードの暗号化
+            String encPassword = CipherUtil.encrypt(pass);
+            users.setPassword(encPassword);
+
         }
         return users;
     }

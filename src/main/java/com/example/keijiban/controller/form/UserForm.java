@@ -1,5 +1,6 @@
 package com.example.keijiban.controller.form;
 
+import com.example.keijiban.validation.CreateGroup;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -18,13 +19,13 @@ public class UserForm implements Serializable {
     private Integer Id;
 
     @NotBlank(message="アカウントを入力してください")
-    @Pattern(regexp = "^[a-zA-Z0-9]{6,20}$",message ="アカウントは半角英数字かつ6文字以上20文字以下で入力してください")
+    @Pattern(regexp = "^$|^[a-zA-Z0-9]{6,20}$",message ="アカウントは半角英数字かつ6文字以上20文字以下で入力してください")
     private String account;
 
-    @Pattern(regexp = "^[a-zA-Z0-9]{6,20}$",message ="パスワードは半角英数字かつ6文字以上20文字以下で入力してください")
+    @Pattern(regexp = "^$|^[a-zA-Z0-9]{6,20}$",message ="パスワードは半角英数字かつ6文字以上20文字以下で入力してください")
     private String password;
 
-    @Pattern(regexp = "^[a-zA-Z0-9]{6,20}$",message ="パスワードは半角英数字かつ6文字以上20文字以下で入力してください")
+    @Pattern(regexp = "^$|^[a-zA-Z0-9]{6,20}$",message ="パスワードは半角英数字かつ6文字以上20文字以下で入力してください")
     private String confirmPassword;
 
     @NotBlank(message = "氏名を入力してください")
