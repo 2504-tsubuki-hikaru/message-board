@@ -4,13 +4,16 @@ import com.example.keijiban.controller.form.MessageForm;
 import com.example.keijiban.repository.MessageRepository;
 import com.example.keijiban.repository.entity.Message;
 import com.example.keijiban.repository.entity.User;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.util.Date;
 
+
 @Service
+@Transactional
 public class MessageService {
 
     @Autowired
@@ -20,6 +23,7 @@ public class MessageService {
     public void saveMessage(MessageForm reqMessage) throws ParseException {
         Message saveMessage = setMessageEntity(reqMessage);
         messageRepository.save(saveMessage);
+        messageRepository.flush();
     }
 
     //引数の情報をEntityに設定

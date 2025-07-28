@@ -22,8 +22,9 @@
         <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}" style="color:red;"></div>
         <div class="label">本文</div>
         <textarea class="tweet-box" th:field="*{text}" rows="10" cols="30"></textarea><br/>
-        <div>
+        <div class="button-row">
             <input class="addButton" type="submit" value="新規投稿"/>
+            <a href="/keijiban" class="home-link"　onclick="return confirm('本当に戻りますか？');">ホームに戻る</a>
         </div>
 </form>
 </body>

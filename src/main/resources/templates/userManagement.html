@@ -7,15 +7,20 @@
     <div class="umTitle">ユーザー管理画面</div>
 </head>
 <body>
+<div th:if="${notAccess}" class="loginFailure" th:text="${notAccess}" style="color:red;" ></div>
 <!--ユーザー登録画面遷移ボタン表示-->
 <div class="userRegistration">
     <a href="/registration">
         <input type="button" value="ユーザ―新規登録画面" class="urButton">
     </a>
+    <div class="backHome">
+        <a href="/keijiban">
+            <input type="button" value="ホームに戻る" class="homeButton">
+        </a>
+    </div>
 </div>
 <!--ユーザー情報の表示-->
 <div class="userMainHome">
-    登録アカウント一覧
     <div class="userMainHome">
         <table class="urTitle">
             <colgroup>
@@ -62,12 +67,12 @@
                         <form th:action="@{/update/{id}(id=${usd.id})}" th:method="put">
                             <div th:if="${usd.isStopped == 0}">
                                 <input type="hidden" name="isStopped" value="1" />
-                                <input type="submit" onclick="return confirm('本当に変更しますか？');" value="停止" class="changButton">
+                                <input type="submit" onclick="return confirm('本当に変更しますか？');" value="停止する" class="changButton">
                                 <input type="hidden" name="id" th:value="${usd.id}"/>
                             </div>
                             <div th:if="${usd.isStopped == 1}">
                                 <input type="hidden" name="isStopped" value="0" />
-                                <input type="submit" onclick="return confirm('本当に変更しますか？');" value="復活" class="chang2Button">
+                                <input type="submit" onclick="return confirm('本当に変更しますか？');" value="復活する" class="chang2Button">
                                 <input type="hidden" name="id" th:value="${usd.id}"/>
                             </div>
                         </form>
@@ -89,5 +94,5 @@
 </div>
 </body>
 </html>
-<!--<div th:if="${udbData.id} != ${filter.id}">-->
+
 

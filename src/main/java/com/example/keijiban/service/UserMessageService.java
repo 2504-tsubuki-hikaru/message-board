@@ -25,19 +25,19 @@ public class UserMessageService {
         String strEndDate;
 
         if (!isBlank(start)) {
-            strStartDate = start + " 00:00:00";
+            strStartDate = start + " 00:00:00:000";
         } else {
-            strStartDate = "2022-01-01 00:00:00";
+            strStartDate = "2022-01-01 00:00:00:000";
         }
 
         if (!isBlank(end)) {
-            strEndDate = end + " 23:59:59";
+            strEndDate = end + " 23:59:59:000";
         } else {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
             strEndDate = dateFormat.format(new Date());
         }
 
-        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
         Date startDate = sdFormat.parse(strStartDate);
         Date endDate = sdFormat.parse(strEndDate);
 

@@ -66,6 +66,6 @@ public class LoginController {
 
         session.setAttribute("Filter", user);
         session.setAttribute("loginUser", users);
-        return new ModelAndView("redirect:/home");
+        return new ModelAndView("redirect:/keijiban");
     }
 }

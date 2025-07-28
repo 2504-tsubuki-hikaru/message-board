@@ -56,7 +56,7 @@
 	box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
 }
 
-.loginFailure {
+.loginFailure1 {
 margin-left: 110px;
 }
 
@@ -201,7 +201,7 @@ background-color: #dc3545;
     border-radius: 4px;
     cursor: pointer;
     font-size: 10px;
-    margin-left: 60px;
+    margin-left: 10px;
 }
 
 .comment-row {
@@ -242,13 +242,13 @@ font-size: 18px;
 
 .addButton {
 background-color: #007BFF;
-color: white;
-    border: none; /* 枠線をなくす */
+    color: white;
+    border: none;
     padding: 7px 15px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 12px;
-    margin-left: 20px;
+    margin: 0 auto;
 }
 
 .color {
@@ -376,19 +376,20 @@ background-color:#DDFFFF;
 }
 
 .newUserButton {
-background-color: #007BFF;
-color: white;
-    border: none; /* 枠線をなくす */
+ background-color: #007BFF;
+    color: white;
+    border: none;
     padding: 7px 15px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 12px;
-    margin-left: 20px;
-    margin-top: 20px;
+    margin: 20px auto 0 auto;
 }
 
 .tweet-box {
 margin-bottom: 15px;
+white-space: pre-wrap;
+word-wrap: break-word;
 }
 
 .urLabel {
@@ -406,5 +407,113 @@ background-color: #DDFFDD;
 }
 
 .div-pre {
-    white-space: pre;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.loginFailure {
+    margin-bottom: 20px;
+    font-size: 20px;
+    margin-left: 490px
+}
+
+.homeDelete-button {
+background-color: #dc3545;
+ color: white;
+     border: none;
+     padding: 7px 15px;
+     border-radius: 4px;
+     cursor: pointer;
+     font-size: 12px;
+     margin-left: 20px;
+     margin-top: 15px;
+}
+
+.comment{
+margin-top:15px;
+}
+
+.homeButton {
+background-color: #007BFF; /* ブートストラップ風の緑 */
+    color: white;
+    border: none; /* 枠線をなくす */
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 100px;
+}
+
+.button-row {
+    display: flex;
+        align-items: center;
+        position: relative;
+        width: 100%;
+}
+
+.home-link {
+    position: absolute;
+    right: 20px;
+    color: #007BFF;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.home-link:hover {
+    text-decoration: underline;
+}
+
+.user-button-row {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.home-link2 {
+    position: absolute;
+    right: 20px;
+    color: #007BFF;
+    text-decoration: none;
+    font-size: 14px;
+    margin-top: 17px;
+}
+
+.userEditRow {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* 中央に寄せるボタン */
+.newUserButton {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 7px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+/* 右端に寄せるリンク */
+.home-link3 {
+    position: absolute;
+    right: 20px;
+    color: #007BFF;
+    text-decoration: none;
+    font-size: 14px;
+    margin-top: 17px;
+}
+
+.home-link3:hover {
+    text-decoration: underline;
+}
+
+.comme {
+margin-top: 10px;
 }

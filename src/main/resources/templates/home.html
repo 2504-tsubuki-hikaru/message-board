@@ -9,7 +9,7 @@
     </div>
 </head>
 <body>
-<div th:if="${notAccess}" class="loginFailure" th:text="${noAccess}" style="color:red;" ></div>
+<div th:if="${notAccess}" class="loginFailure" th:text="${notAccess}" style="color:red;" ></div>
 <!--新規投稿ボタン表示-->
 <div class="loginButtons">
     <div class="newPost">
@@ -33,13 +33,13 @@
 </div>
 <!--絞込機能-->
 <div class="calendar">
-    <form th:action="@{/home}" th:method="get">
+    <form th:action="@{/keijiban}" th:method="get">
         <div class="date-group">
             <label>日付 :</label>
             <input class="strDay" type="date" name="start" th:value="${start}"> 　～
             　<input class="endDay" type="date" name="end" th:value="${end}">
             <label>  カテゴリー :</label>
-            <input type="text" name="category" class="category" th:text="${category}"/>
+            <input type="text" name="category" class="category" th:value="${category}" style="width:200px;" />
             <input type="submit" class="selectButton" value="絞込">
         </div>
     </form>
@@ -50,27 +50,21 @@
     <div class="accountTable">
         <div class="name"><span th:text="${userMessageDate.name}"/></div>
         <div class="account"><span th:text="${userMessageDate.account}"/></div>
-        <div class="date"><span th:text="${userMessageDate.createdDate}"/></div>
+        <div class="date"><span th:text="${#dates.format(userMessageDate.createdDate, 'yyyy/MM/dd HH:mm:ss')}"></span></div>
     </div>
     <div class="title-category">
-        <div> 件名　: <span th:text="${userMessageDate.title}"/></div>
-        <div>カテゴリー　: <span th:text="${userMessageDate.category}"/></div>
+        <div> 【件名】　: <span th:text="${userMessageDate.title}"/></div>
+        <div>【カテゴリー】　: <span th:text="${userMessageDate.category}"/></div>
     </div>
-        本文：<div class="div-pre" th:text="${userMessageDate.text}"></div>
-        <!--<div class="div-pre"> 本文　: <span th:text="${userMessageDate.text}"/></div>-->
-    <div class="delete-button" >
-        <!--ログインユーザーが自分で投稿した物だけ削除ボタンを表示-->
-        <div th:if ="${ loginUser.id == userMessageDate.userId }">
-            <form th:action="@{/delete/{id}(id=${userMessageDate.messageId})}" th:method="delete">
-                <input type="submit" onclick="return confirm('本当に削除しますか？');" value="削除">
-            </form>
-        </div>
-    </div>
+    <div>【本文】</div>
+        <div class="div-pre" th:text="${userMessageDate.text}"></div>
     <!--コメント表示処理とコメント削除ボタン表示処理-->
     <div th:each="userCommentDate : ${userCommentDate}"
          th:if="${userCommentDate.messageId} == ${userMessageDate.messageId}">
+        <div class="comme">【コメント】</div>
+        <!--<div class="div-pre" th:text="${userCommentDate.text}"></div>-->
+        <div class="div-pre" th:utext="${userCommentDate.text}"></div>
         <div class="comment-row">
-        <div class="div-pre">   コメント　: <span th:text="${userCommentDate.text}"/></div>
         <!--ログインユーザーが自分でコメントした物だけ削除ボタンを表示-->
         <div th:if ="${ loginUser.id == userCommentDate.userId }">
             <form th:action="@{/commentDelete/{id}(id=${userCommentDate.id})}" th:method="delete">
@@ -90,14 +84,22 @@
                     </div>
                 </div>
             </div>
-            <div><label>コメント入力欄</label></div>
-            <textarea class="tweet-box" name="text" size="20" maxlength="550" ></textarea><br/>
+            <div class="comment"><label>【コメント入力欄】</label></div>
+            <textarea class="tweet-box" name="text" size="30" maxlength="550" style="width:100%; height:60px;" ></textarea><br/>
             <input type="submit" value="コメント" class="comment-Button"/>
             <!--th:value～にしないとControllerに値を渡せない。（valueで渡そうとしていた為コメントを残す）-->
             <input type="hidden" name="messageId" th:value="${userMessageDate.messageId}"/>
             <input type="hidden" name="userId" th:value="${userMessageDate.userId}"/>
         </div>
     </form>
+    <div class="homeDelete-butto" >
+        <!--ログインユーザーが自分で投稿した物だけ削除ボタンを表示-->
+        <div th:if ="${ loginUser.id == userMessageDate.userId }">
+            <form th:action="@{/delete/{id}(id=${userMessageDate.messageId})}" th:method="delete">
+                <input type="submit" onclick="return confirm('本当に削除しますか？');" class="homeDelete-button" value="投稿削除">
+            </form>
+        </div>
+    </div>
 </div>
 </body>
 </html>

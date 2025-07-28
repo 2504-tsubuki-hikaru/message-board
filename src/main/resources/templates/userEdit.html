@@ -58,8 +58,9 @@
             </select>
         </div>
     </div>
-    <div>
+    <div class="userEditRow">
         <input class="newUserButton" type="submit" value="ユーザー編集"/>
+        <a href="/management" class="home-link3">戻る</a>
         <input type="hidden" name="id" th:value="${userDate.id}"/>
         <input type="hidden" name="isStopped" th:value="${userDate.isStopped}"/>
         <input type="hidden" name="createdDate" th:value="${userDate.createdDate}"/>

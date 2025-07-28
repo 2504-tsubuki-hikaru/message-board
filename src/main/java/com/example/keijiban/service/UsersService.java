@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsersService {
@@ -75,8 +76,12 @@ public class UsersService {
 
     //idに該当するデータを１件取得
     public UserForm findById(Integer id) {
-        List<User> results = new ArrayList<>();
-        results.add((User) usersRepository.findById(id).orElse(null));
+        Optional<User> optionalUser = usersRepository.findById(id);
+        if (optionalUser.isEmpty()) {
+            return null;
+        }
+
+        List<User> results = List.of(optionalUser.get());
         List<UserForm> reports = setUserForm(results);
         return reports.get(0);
     }

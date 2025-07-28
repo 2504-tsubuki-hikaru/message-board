@@ -56,6 +56,6 @@ public class NewPostController {
         //userIdをmessageFormに格納
         messageForm.setUserId(loginUser.getId());
         messageService.saveMessage(messageForm);
-        return new ModelAndView("redirect:/home");
+        return new ModelAndView("redirect:/keijiban");
     }
 }

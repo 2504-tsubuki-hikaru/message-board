@@ -1,13 +1,11 @@
 package com.example.keijiban.controller;
 
-import com.example.keijiban.cipher.CipherUtil;
 import com.example.keijiban.controller.form.UserForm;
 import com.example.keijiban.controller.form.UserRegistrationForm;
 import com.example.keijiban.dto.UserBranchDepartDto;
 import com.example.keijiban.dto.UserFilterDto;
 import com.example.keijiban.service.UserBranchDepartService;
 import com.example.keijiban.service.UsersService;
-import com.example.keijiban.validation.EditGroup;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,16 +38,24 @@ public class UserManagementController {
 
         if (filter.getBranchId() != 4 && filter.getDepartmentId() != 3) {
             session.setAttribute("notAccess", "無効なアクセスです");
-            return new ModelAndView("redirect:/home");
+            return new ModelAndView("redirect:/keijiban");
         }
 
         ModelAndView mav = new ModelAndView();
         //ユーザー情報取得（部署名と支店名を含む）
         List<UserBranchDepartDto> udbData = userBranchDepartService.findAllUserBranchDepart();
 
+        //管理者権限フィルターのエラーメッセージ
+        String notAccess = (String)session.getAttribute("notAccess");
+        mav.addObject("notAccess", notAccess);
+
+        mav.addObject("notAccess", notAccess);
         mav.addObject("udbData", udbData);
         mav.addObject("filter", filter);
         mav.setViewName("userManagement");
+
+        session.removeAttribute("notAccess");
+
         return mav;
     }
 
@@ -69,6 +75,14 @@ public class UserManagementController {
      */
     @GetMapping("/registration")
     public ModelAndView userRegistration() {
+
+        UserFilterDto filter = (UserFilterDto)session.getAttribute("Filter");
+
+        if (filter.getBranchId() != 4 && filter.getDepartmentId() != 3) {
+            session.setAttribute("notAccess", "無効なアクセスです");
+            return new ModelAndView("redirect:/keijiban");
+        }
+
         ModelAndView mav = new ModelAndView();
         mav.addObject("formModel", new  UserRegistrationForm());
         mav.setViewName("userRegistration");
@@ -86,7 +100,7 @@ public class UserManagementController {
 
         if (filter.getBranchId() != 4 && filter.getDepartmentId() != 3) {
             session.setAttribute("notAccess", "無効なアクセスです");
-            return new ModelAndView("redirect:/home");
+            return new ModelAndView("redirect:/keijiban");
         }
 
         if (result.hasErrors()) {
@@ -139,21 +153,41 @@ public class UserManagementController {
      * ユーザー編集画面遷移処理
      */
     @GetMapping("/userEdit/{id}")
-    public ModelAndView userEdit(@PathVariable("id") int id) {
+    public ModelAndView userEdit(@PathVariable("id") String idStr) {
+        // 数字かどうかをチェック
+        if (!idStr.matches("\\d+")) {
+            session.setAttribute("notAccess", "不正なパラメーターが入力されました");
+            return new ModelAndView("redirect:/management");
+        }
 
-        UserFilterDto filter = (UserFilterDto)session.getAttribute("Filter");
+        int id = Integer.parseInt(idStr);
 
+        UserFilterDto filter = (UserFilterDto) session.getAttribute("Filter");
         if (filter.getBranchId() != 4 && filter.getDepartmentId() != 3) {
             session.setAttribute("notAccess", "無効なアクセスです");
-            return new ModelAndView("redirect:/home");
+            return new ModelAndView("redirect:/keijiban");
+        }
+
+        //存在しないidかチェック
+        UserForm userForm = usersService.findById(id);
+        if (userForm == null) {
+            session.setAttribute("notAccess", "不正なパラメーターが入力されました");
+            return new ModelAndView("redirect:/management");
         }
 
         ModelAndView mav = new ModelAndView();
-        UserForm userForm = usersService.findById(id);
+
         mav.addObject("userDate", userForm);
         mav.addObject("filter", filter);
         mav.setViewName("userEdit");
         return mav;
+    }
+
+    //idが無かった場合のエラー処理
+    @GetMapping("/userEdit")
+    public ModelAndView userEditWithoutId() {
+        session.setAttribute("notAccess", "不正なパラメーターが入力されました");
+        return new ModelAndView("redirect:/management");
     }
 
     /*

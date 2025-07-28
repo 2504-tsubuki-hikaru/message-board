@@ -48,7 +48,7 @@ public class HomeController {
     /*
      * ホーム画面表示処理
      */
-    @GetMapping("/home")
+    @GetMapping("/keijiban")
     public ModelAndView home(@RequestParam(name="start",required = false)String start,
                              @RequestParam(name="end",required = false)String end,
                              @RequestParam(name="category",required = false) String category) throws ParseException {
@@ -73,6 +73,7 @@ public class HomeController {
         mav.addObject("notAccess", notAccess);
         //int型にすると!=nullが使えないのでIntegerを使う（ラッパークラス）
         Integer messageId = (Integer) session.getAttribute("messageId");
+
         //初期表示のエラー回避
         if (messageId != null) {
             mav.addObject("messageId",messageId);
@@ -82,6 +83,7 @@ public class HomeController {
         mav.addObject("userMessageDate", userMessageData);
         mav.addObject("userCommentDate", userCommentData);
         mav.addObject("errorMessages", errorMessages);
+        mav.addObject("notAccess", notAccess);
         mav.addObject("loginUser", loginUser);
         mav.setViewName("home");
 
@@ -102,7 +104,7 @@ public class HomeController {
         //投稿を削除
         messageService.deletePost(id);
         //削除後、新規投稿全件取得をしたい
-        return new ModelAndView("redirect:/home");
+        return new ModelAndView("redirect:/keijiban");
     }
 
     /*
@@ -122,7 +124,7 @@ public class HomeController {
 
             ModelAndView mav = new ModelAndView();
             //エラーの時はホーム画面でエラーを出したいから遷移先を指定
-            mav.setViewName("redirect:/home");
+            mav.setViewName("redirect:/keijiban");
             //引数をそのまま返す。
             mav.addObject("formModel", commentForm);
             return mav;
@@ -133,7 +135,7 @@ public class HomeController {
         commentForm.setUserId(user.getId());
         //コメント内容をDBへ登録
         commentService.commentAdd(commentForm);
-        return new ModelAndView("redirect:/home");
+        return new ModelAndView("redirect:/keijiban");
     }
 
     /*
@@ -144,6 +146,6 @@ public class HomeController {
         // 投稿をテーブルに格納
         commentService.commentDeleteById(id);
         // rootへリダイレクト
-        return new ModelAndView("redirect:/home");
+        return new ModelAndView("redirect:/keijiban");
     }
 }

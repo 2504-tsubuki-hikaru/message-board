@@ -13,7 +13,7 @@ public class FilterConfig {
         FilterRegistrationBean<LoginFilter> registrationBean = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new LoginFilter());
-        registrationBean.addUrlPatterns("/home", "/new", "/management", "/userEdit/*", "/registration");
+        registrationBean.addUrlPatterns("/keijiban", "/new", "/management", "/userEdit/*", "/registration");
         registrationBean.setName("LoginFilter");
         registrationBean.setOrder(1); // 複数のFilterがある場合は優先度を設定
 
